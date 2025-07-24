@@ -4,47 +4,64 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text sText;
-    public GameObject screen1;
-    public GameObject screen2;
-    public GameObject screen3;
-    public GameObject sUI;
+    public TMP_Text scoreText;
+    public GameObject titleScreen;
+    public GameObject readyScreen;
+    public GameObject gameOverScreen;
+    public GameObject scoreUI;
 
+    /// <summary>
+    /// Increases the score that shows on screen by passing an int
+    /// </summary>
+    /// <param name="score"></param>
     public void UpdateScore(int score)
     {
-        sText.text = score.ToString();
+        scoreText.text = score.ToString();
     }
 
+    /// <summary>
+    /// Activates the title screen and deactivates the other screens 
+    /// </summary>
     public void ShowStart()
     {
-        screen1.SetActive(true);
-        screen2.SetActive(false);
-        screen3.SetActive(false);
-        sUI.SetActive(false);
+        titleScreen.SetActive(true);
+        readyScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
+        scoreUI.SetActive(false);
     }
 
+    /// <summary>
+    /// Hides the title screen
+    /// </summary>
     public void HideStart()
     {
-        screen1.SetActive(false);
+        titleScreen.SetActive(false);
     }
 
+    /// <summary>
+    /// Activates the ready screen and deactivates the other screens after the player hits start
+    /// </summary>
     public void ShowReady()
     {
-        screen1.SetActive(false);
-        screen2.SetActive(true);
-        screen3.SetActive(false);
+        titleScreen.SetActive(false);
+        readyScreen.SetActive(true);
+        gameOverScreen.SetActive(false);
     }
 
+    /// <summary>
+    /// Hides the ready screen and activates the score UI
+    /// </summary>
     public void HideReady()
     {
-        screen2.SetActive(false);
-        sUI.SetActive(true);
+        readyScreen.SetActive(false);
+        scoreUI.SetActive(true);
     }
 
+    /// <summary>
+    /// Activates the game over screen when the player dies
+    /// </summary>
     public void ShowGameOver()
     {
-        screen3.SetActive(true);
+        gameOverScreen.SetActive(true);
     }
-
-
 }
