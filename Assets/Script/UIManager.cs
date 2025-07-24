@@ -31,14 +31,6 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Hides the title screen
-    /// </summary>
-    public void HideStart()
-    {
-        titleScreen.SetActive(false);
-    }
-
-    /// <summary>
     /// Activates the ready screen and deactivates the other screens after the player hits start
     /// </summary>
     public void ShowReady()
