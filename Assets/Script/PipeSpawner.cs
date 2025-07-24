@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PipeSpawner : MonoBehaviour
 {
-    public GameObject prefab;
+    public GameObject pipe;
     public float spawnRate = .1f;
-    public float randomVariable = 1f;
-    public Transform wherewewanttheprefabtostart;
+    public float spawnRange = 1f;
+    public Transform pipeSpawn;
     
     private float timer = float.MaxValue;
 
@@ -14,20 +14,26 @@ public class PipeSpawner : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= spawnRate)
         {
-            DoStuff();
+            SpawnPipe();
             timer = 0f;
         }
     }
 
+    /// <summary>
+    /// returns that the script may begin spawning pipes
+    /// </summary>
     public void StartSpawning()
     {
         enabled = true;
     }
 
-    void DoStuff()
+    /// <summary>
+    /// Spawns the pipes at random along a negative and positive range, and then waits a certain time before spawning another
+    /// </summary>
+    void SpawnPipe()
     {
-        float yOffset = Random.Range(-randomVariable, randomVariable);
-        Vector3 spawnPosition = wherewewanttheprefabtostart.position + Vector3.up * yOffset;
-        Instantiate(prefab, spawnPosition, Quaternion.identity);
+        float yOffset = Random.Range(-spawnRange, spawnRange);
+        Vector3 spawnPosition = pipeSpawn.position + Vector3.up * yOffset;
+        Instantiate(pipe, spawnPosition, Quaternion.identity);
     }
 }
