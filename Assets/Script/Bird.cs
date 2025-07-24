@@ -5,30 +5,33 @@ public class Bird : MonoBehaviour
 {
     private Rigidbody2D birdRB;
     private Animator birdAnimator;
-
+    private AudioSource audioSource;
     private bool isAlive = false;
     private Vector3 initialBirdPosition;
     private Quaternion initialBirdRotation;
+    [SerializeField] AudioClip flyClip;
+    [SerializeField] AudioClip hitClip;
 
     public float maxJumpVelocity = 5f;
     public float maxUpwardAngle = 45f;     
     public float maxDownwardAngle = -90f;  
     public float rotationLerpSpeed = 5f;
     public float gravityScale = 3f;
-    
-    private void Awake()
-    {
-    }
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = flyClip;
         initialBirdPosition = transform.position;
         initialBirdRotation = transform.rotation;
         birdAnimator = GetComponent<Animator>();
         birdRB = GetComponent<Rigidbody2D>();
-        birdRB.gravityScale = 0f; 
+        birdRB.gravityScale = 0f;
     }
 
+    /// <summary>
+    /// checks to see if the player clicks or presses space to make the bird jump, and plays audio when the player does so
+    /// </summary>
     void Update()
     {
         if (isAlive)
@@ -36,6 +39,7 @@ public class Bird : MonoBehaviour
             if (Input.GetButton("Jump") || Input.GetButton("Fire1"))
             {
                 Jump();
+                audioSource.Play();
             }
             RotateBasedOnVelocity();
         }
@@ -46,12 +50,18 @@ public class Bird : MonoBehaviour
         birdAnimator.ResetTrigger("Jump");
     }
 
+    /// <summary>
+    /// Moves the bird object up by the maximum velocity
+    /// </summary>
     private void Jump()
     {
         birdRB.linearVelocity = Vector2.up * maxJumpVelocity;
         birdAnimator.SetTrigger("Jump");
     }
 
+    /// <summary>
+    /// Rotates the bird game object depending on the facing and movement of the bird. rotates down if going down, and rotates up when moving up
+    /// </summary>
     void RotateBasedOnVelocity()
     {
         float verticalVelocity = birdRB.linearVelocity.y;
@@ -90,21 +100,32 @@ public class Bird : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, newZ);
     }
 
+    /// <summary>
+    /// Sets the game when the player hits start, putting bird into position and readying the animator
+    /// </summary>
     public void StartGame()
     {
         isAlive = true;
         birdRB.gravityScale = gravityScale;
         birdRB.linearVelocity = Vector2.zero;
+        birdAnimator.SetBool("GameStart", true);
     }
 
+    /// <summary>
+    /// resets the bird back into the initial position and resets the audio back into the flying audio
+    /// </summary>
     public void ResetBird()
     {
+        audioSource.clip = flyClip;
         isAlive = false;
         birdRB.gravityScale = 0f;
         transform.position = initialBirdPosition;
         transform.rotation = initialBirdRotation;
     }
 
+    /// <summary>
+    /// triggers the player as dead and tells the game manager to stop the game
+    /// </summary>
     public void Die()
     {
         isAlive = false;
@@ -112,8 +133,15 @@ public class Bird : MonoBehaviour
         GameManager.Instance.GameOver();
     }
 
+    /// <summary>
+    /// checks to see if the player enters another 2d object with colliders and kills the player
+    /// plays the hit audio
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        audioSource.clip = hitClip;
+        audioSource.Play();
         Die();
     }
 }

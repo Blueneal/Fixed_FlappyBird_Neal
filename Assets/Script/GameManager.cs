@@ -81,10 +81,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void GameOver()
     {
-        audioSource.clip = deathAudio;
-        audioSource.Play();
         Time.timeScale = 0f;
         uiManager.ShowGameOver();
+        audioSource.clip = deathAudio;
+        audioSource.Play();
     }
 
     /// <summary>
