@@ -13,21 +13,38 @@ public class BounceUI : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         startAnchoredPos = rectTransform.anchoredPosition;
-
         StartCoroutine(BounceUp());
     }
 
+    /// <summary>
+    /// Bounces the title screen text up by the MoveVertical() function transform
+    /// </summary>
+    /// <returns></returns>
     IEnumerator BounceUp()
     {
         yield return StartCoroutine(MoveVertical(startAnchoredPos, startAnchoredPos + Vector2.up * bounceHeight, bounceDuration));
         StartCoroutine(BounceDown());
     }
 
+    /// <summary>
+    /// Bounces the title screen text down by the MoveVertical() function transform
+    /// </summary>
+    /// <returns></returns>
     IEnumerator BounceDown()
     {
         yield return StartCoroutine(MoveVertical(startAnchoredPos + Vector2.up * bounceHeight, startAnchoredPos, bounceDuration));
+        StartCoroutine(BounceUp());
     }
 
+    /// <summary>
+    /// Calculates the speed and positioning to move the Title text depending on its starting point in the transformation within a certain speed
+    /// FROM moves it up FROM the starting point
+    /// TO moves it down back to the starting point
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     IEnumerator MoveVertical(Vector2 from, Vector2 to, float duration)
     {
         float elapsed = 0f;
